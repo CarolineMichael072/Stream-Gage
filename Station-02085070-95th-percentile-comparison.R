@@ -1,8 +1,4 @@
-buildURL <- function(siteNumber){
-  url <- "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites="
-  url <- paste0(url,siteNumber,"&statReportType=daily&statTypeCd=p95")
-  return(url)
-}
+
 
 readNWISstat <- function (siteNumber, parameterCd)
 {

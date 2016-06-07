@@ -1,0 +1,248 @@
+---
+title: "Hurricane Floyd Stream Gage Analysis"
+output: html_document
+---
+We want to evaluate the discharge at multiple stream gage stations in the path of Hurricane Floyd (1999). First, we obtain stream gage stations by county using the following code:
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+library(dplyr)
+stream_stations <- function(fips, date_min, date_max, fraction_coverage = NULL){
+  fips <- paste(fips, collapse = ",")
+  url <- paste0("http://waterservices.usgs.gov/nwis/site/?format=rdb&countyCd=",
+                fips, "&startDT=", date_min, "&endDT=", date_max,
+                "&outputDataTypeCd=dv&parameterCd=00060&siteType=ST")
+
+  df <- read.table(url, sep = "\t", comment.char = "#", header = TRUE)
+  df <- df[-1, ]
+
+  df$begin_date <- lubridate::ymd(df$begin_date)
+  df$end_date <- lubridate::ymd(df$end_date)
+
+  df <- dplyr::mutate(df, date_range = df$end_date - df$begin_date)
+  df$date_range <- as.numeric(df$date_range)
+  df$count_nu <- as.numeric(df$count_nu)
+
+  df <- dplyr::mutate(df, perc_coverage = (count_nu/date_range))
+  if(is.null(fraction_coverage)){
+    fraction_coverage <- min(df$perc_coverage)
+  }
+
+  df <- filter(df, perc_coverage >= fraction_coverage)
+
+  vec <- as.character(unique(df$site_no))
+  return(vec)
+}
+stream_stations("37019", "1987-01-01", "2014-12-31", fraction_coverage=NULL)
+# [1] "02105900" "02109500"
+```
+Here we use use a fips code corresponding to Brunswick County, NC near Wilmington, NC. The code outputs two stream gage site numbers, 02105900 and 02109500. Next, we find the 95th percentile of flow at these stations to define a flood. The function used below is only able to output percentile values of discharge up to the 95th percentile. More analysis will have to be performed to find values for the 99th or other more specific percentile discharges in order to define "flooding".
+
+```{r}
+buildURL <- function(siteNumber) {
+  url <- "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites="
+  url <- paste0(url, siteNumber, "&statReportType=daily&statTypeCd=p95")
+  return(url)}
+buildURL("02105900")
+```
+The generated url for site 02105900 includes 95th percentile values for parameters other than discharge. To clean this up, run the following code to ensure that only the discharge values are presented (ie values for parameter_cd 00060).
+
+```{r}
+readNWISstat <- function (siteNumber, parameterCd)
+{
+  url <- buildURL(siteNumber)
+  data <- read.table(url,sep="\t",header=T)
+  #remove first row
+  data <- data[2:length(data[,1]),]
+  #keep only discharge values
+  data <- data[data$parameter_cd==parameterCd,]
+  
+  return(data)
+}
+```
+Running this code will cause R to output all the available 95th percentile values for discharge at staiton 02105900. These percentile values are listed by day and month. This means that we can find the 95th percentile of discharge on all days encompassing Hurricane Floyd (1999) and compare the 95th percentile discharges to the actual discharges during Hurricane Floyd (1999).
+
+```{r}
+library(waterData)
+site.02105900.floyd.discharge <- importDVs("02105900", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")
+site.02105900.floyd.discharge
+
+```
+We can also build a url with site.02105900.floyd.discharge. Note that the discharges are denoted with a qualcode. Qualcode "A" denotes approved for publication, qualcode "e" means that the value has been edited or estimated be USGS personnel. A full list of qualcodes is available at (http://help.waterdata.usgs.gov/codes-and-parameters/daily-value-qualification-code-dv_rmk_cd)
+
+```{r}
+library(waterData)
+site.02105900.floyd.url <- tellMeURL("02105900", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")
+site.02105900.floyd.url
+```
+Plot the Floyd data along with the percentile data to get a visual representation of potential flooding.
+
+```{r}
+# Create a plot of the daily discharge data using the waterData function plotParam. This step is not strictly necessary
+floyd.plot <- plotParam(site.02105900.floyd.discharge)
+print(floyd.plot)
+
+# Sort out all percentile values for September
+library(xtable)
+site.02105900.percentile.data <- readNWISstat("02105900", "00060")
+xtable(site.02105900.percentile.data[245:275, ])
+
+# Creating data set manually for September 1-26, find better way to do this
+site.02105900.percentile.data <- c(681, 327, 182, 208, 233, 824, 357, 190, 241, 196, 288, 740, 425, 296, 839, 983, 757, 518, 504, 337, 299, 297, 634, 640, 377, 287)
+site.02105900.floyd.discharge <- c(77, 43, 27, 20, 16, 15, 16, 16, 16, 27, 32, 20, 14, 12, 1000, 3000, 2600, 1600, 1200, 900, 850, 750, 650, 580, 540, 520)
+
+# Create plot with both data sets
+plot(site.02105900.floyd.discharge, type="o", col="blue", ylim=c(0,3000))
+lines(site.02105900.percentile.data, type="o", col="red")
+title(main="Floyd Discharge vs. 95th Percentile")
+
+```
+From the plot, we can assume flooding was probably occuring between September 14th and 26th.
+
+However, not all stream staitons have reliable stream gage data. This gage (02093229) in New Hanover County, NC (also near Wilmington, NC) does not have reliable data.
+
+```{r}
+library(dplyr)
+stream_stations("37129", "1987-01-01", "2014-12-31", fraction_coverage=NULL)
+# [1] "02093229"
+buildURL("02093229")
+# The url http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02093229&statReportType=daily&statTypeCd=p95 does not display any 95th percentile flow values.
+
+```
+We also want to examine flooding in areas more indirectly affected by Hurricane Floyd. Below is the code for stream stations on in or near the Raleigh-Durham area.
+
+```{r}
+# Wake County
+stream_stations("37183", "1987-01-01", "2014-12-31", fraction_coverage=NULL)
+#[1] "0208718210"      "02087183"        "0208721055"      "0208721290"      "0208725600"      "0208726005"     
+#[7] "0208726100"      "0208726835"      "0208726990"      "02087275"        "0208730025"      "02087322"       
+#[13] "02087324"        "0208732534"      "0208732810"      "0208732885"      "0208734220"      "0208735012"    
+#[19] "0208735550"      "02087359"        "0208739674"      "0208739678"      "0208741400"      "02087580"     
+#[25] "0208758850"      "0208762750"      "0208762755"      "02088383"        "0209782609"      "354347078401501"
+#[31] "354349078402801" "354355078401401"
+
+# Durham County
+stream_stations("37063", "1987-01-01", "2014-12-31", fraction_coverage=NULL)
+#[1] "02085070"   "02085079"   "0208521324" "02085220"   "0208524090" "0208524975" "02085500"   "02086000"  
+#[9] "02086500"   "0208650112" "0208675010" "02086849"   "0208700780" "0209722970" "02097280"   "02097314"  
+#[17] "0209741955"
+
+# Johnston County
+stream_stations("37101", "1987-01-01", "2014-12-31", fraction_coverage=NULL)  
+#[1] "02087500"   "02087570"   "0208773375" "02088000"   "02088470"   "02088500"
+
+# Orange County
+stream_stations("37135", "1987-01-01", "2014-12-31", fraction_coverage=NULL)
+#[1] "02084909"   "02085000"   "02096846"   "0209691590" "0209691611" "0209734440" "0209736050" "02097464"   "02097517"
+
+# Franklin County
+stream_stations("37069", "1987-01-01", "2014-12-31", fraction_coverage=NULL)
+#[1] "02081747" "02082731"
+
+# Nash County (closer to Rocky Mount, NC)
+stream_stations("37127", "1987-01-01", "2014-12-31", fraction_coverage=NULL)
+#[1] "02081942"   "0208250410" "02082506"   "02082770"
+
+# Chatham County
+stream_stations("37037", "1987-01-01", "2014-12-31", fraction_coverage=NULL)
+#[1] "02096960"   "0209782150" "02098198"   "02098200"   "02098206"   "0210166029" "02101726"   "02101800"   "02102094"  
+#[10] "02102192"  
+
+```
+We also want to find data from stations near Charlotte, NC.
+
+```{r}
+# Mecklenburg County
+stream_stations("37119", "1987-01-01", "2014-12-31", fraction_coverage=NULL)
+# Receive character(0) as output, try changing boundary dates
+
+stream_stations("37119", "1998-01-01", "2000-12-31", fraction_coverage=NULL)
+#[1] "0212414900" "02142651"   "0214266000" "02142900"   "0214291555" "0214295600" "0214620805" "02146211"   "0214627970"
+#[10] "02146285"   "02146300"   "02146315"   "02146348"   "02146381"   "02146409"   "0214642825" "0214643840" "0214645022"
+#[19] "02146470"   "0214650690" "02146507"   "02146530"   "0214655255" "02146562"   "0214657975" "02146600"   "0214666925"
+#[28] "02146670"   "0214669980" "02146700"   "02146750"   "0214677974" "0214678175"
+
+# Gaston County
+stream_stations("37071", "1987-01-01", "2014-12-31", fraction_coverage=NULL)
+#[1] "0214399575" "0214399580" "02144000"   "02145000"
+
+```
+Find data from stream gages in Virginia along floyd path
+
+```{r}
+# Southhampton County
+stream_stations("51175", "1987-01-01", "2014-12-31", fraction_coverage=NULL)
+#[1] "02047000" "02047100" "02049500" "02052090"
+
+```
+Evaluate whether flooding occured at more inland sites -> choose stations from Raleigh-Durham and Charlotte areas that have available 95th percentile data.
+
+```{r}
+# From Wake County
+buildURL("0208718210")
+#No 95th percentile values, choose new station
+
+buildURL("02087324")
+#Has 95th percentile values
+
+#Clean up data to exclude parameter codes other than "00060"
+readNWISstat("02087324", "00060")
+
+```
+Follow the same process as beofre to create a table of the 95th percentile flow values and the average daily discharge for Hurricane Floyd.
+
+```{r}
+library(waterData)
+site.02087324.floyd.discharge <- importDVs("02087324", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")
+site.02087324.floyd.discharge
+
+library(xtable)
+site.02087324.percentile.data <- readNWISstat("02087324", "00060")
+xtable(site.02105900.percentile.data[245:275, ])
+
+site.02087324.percentile.data <- c(837, 873, 535, 553, 1730, 6140, 2470, 1830, 1670, 1510, 1510, 1540, 792, 533, 638, 4090, 2010, 1400, 1130, 783, 622, 908, 470, 533, 932, 787)
+site.02087324.floyd.discharge <- c(28, 23, 19, 151, 2280, 3030, 1800, 1300, 940, 582, 387, 229, 136, 91, 702, 6060, 2290, 1710, 1440, 1040, 807, 1040, 478, 270, 167, 112)
+
+plot(site.02087324.floyd.discharge, type="o", col="blue", ylim=c(0,7000))
+lines(site.02087324.percentile.data, type="o", col="red")
+title(main="Floyd Discharge vs. 95th Percentile")
+# Red is percentile flow, blue is actual recorded flow
+```
+Using this method, it is possible to create a plot for any stream gage station with 95th percentile flow values.
+
+Next, we evaluate a stream gage station in the Charlotte, NC area
+
+```{r}
+# From Mecklenburg County
+buildURL("02142651")
+# No 95th percentile
+buildURL("02146300")
+# Has 95th percentile values
+
+readNWISstat("02146300", "00060")
+library(xtable)
+site.02146300.percentile.data <- readNWISstat("02146300", "00060")
+xtable(site.02146300.percentile.data[245:275, ])
+
+library(waterData)
+site.02146300.floyd.discharge <- importDVs("02146300", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")
+site.02146300.floyd.discharge
+
+site.02146300.percentile.data <- c(50, 57, 240, 197, 215, 146, 569, 228, 59, 68, 156, 164, 155, 110, 76, 131, 120, 103, 102, 82, 68, 488, 313, 162, 167, 164)
+site.02146300.floyd.discharge <- c(11, 9.2, 8.6, 8.4, 65, 18, 14, 12, 15, 13, 7.7, 6.6, 8.2, 7.9, 42, 66, 8.6, 8.4, 8.7, 6.9, 59, 37, 9.9, 7.9, 8.2, 9.1)
+
+plot(site.02146300.floyd.discharge, type="o", col="blue", ylim=c(0,600))
+lines(site.02146300.percentile.data, type="o", col="red")
+title(main="Floyd Discharge vs. 95th Percentile")
+# Red is percentile flow, blue is actual recorded flow
+```
+
+
+
+
+
+
+
+
