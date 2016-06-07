@@ -200,7 +200,8 @@ site.02087324.floyd.discharge
 
 library(xtable)
 site.02087324.percentile.data <- readNWISstat("02087324", "00060")
-xtable(site.02105900.percentile.data[245:275, ])
+head(site.02087324.percentile.data)
+# xtable(site.02105900.percentile.data[245:275, ])
 
 site.02087324.percentile.data <- c(837, 873, 535, 553, 1730, 6140, 2470, 1830, 1670, 1510, 1510, 1540, 792, 533, 638, 4090, 2010, 1400, 1130, 783, 622, 908, 470, 533, 932, 787)
 site.02087324.floyd.discharge <- c(28, 23, 19, 151, 2280, 3030, 1800, 1300, 940, 582, 387, 229, 136, 91, 702, 6060, 2290, 1710, 1440, 1040, 807, 1040, 478, 270, 167, 112)
