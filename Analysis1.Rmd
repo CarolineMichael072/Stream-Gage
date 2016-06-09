@@ -53,7 +53,7 @@ The generated url for site 02105900 includes 95th percentile values for paramete
 readNWISstat <- function (siteNumber, parameterCd)
 {
   url <- buildURL(siteNumber)
-  data <- read.table(url,sep="\t",header=T)
+  data <- read.table(url,sep="\t",header=T, as.is = TRUE)
   #remove first row
   data <- data[2:length(data[,1]),]
   #keep only discharge values
