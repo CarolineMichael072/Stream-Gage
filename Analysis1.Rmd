@@ -70,10 +70,9 @@ site.02105900.floyd.discharge <- importDVs("02105900", code="00060", stat="00003
 site.02105900.floyd.discharge
 
 ```
-We can also build a url with site.02105900.floyd.discharge. Note that the discharges are denoted with a qualcode. Qualcode "A" denotes approved for publication, qualcode "e" means that the value has been edited or estimated be USGS personnel. A full list of qualcodes is available at (http://help.waterdata.usgs.gov/codes-and-parameters/daily-value-qualification-code-dv_rmk_cd)
+We can also build a url with site.02105900.floyd.discharge. Note that the discharges are denoted with a qualcode. Qualcode "A" denotes approved for publication, qualcode "e" means that the value has been edited or estimated be USGS personnel. A full list of qualcodes is available  [here](http://help.waterdata.usgs.gov/codes-and-parameters/daily-value-qualification-code-dv_rmk_cd). 
 
 ```{r}
-library(waterData)
 site.02105900.floyd.url <- tellMeURL("02105900", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")
 site.02105900.floyd.url
 ```
