@@ -93,8 +93,10 @@ kable(site.02105900.percentile.data[245:275, ])
 
 ```{r}
 # Creating data set manually for September 1-26, find better way to do this
-site.02105900.percentile.data <- c(681, 327, 182, 208, 233, 824, 357, 190, 241, 196, 288, 740, 425, 296, 839, 983, 757, 518, 504, 337, 299, 297, 634, 640, 377, 287)
+site.02105900.percentile.data <- as.numeric(site.02105900.percentile.data[245:270, "p95_va"])
+
 site.02105900.floyd.discharge <- c(77, 43, 27, 20, 16, 15, 16, 16, 16, 27, 32, 20, 14, 12, 1000, 3000, 2600, 1600, 1200, 900, 850, 750, 650, 580, 540, 520)
+
 # Create plot with both data sets
 plot(site.02105900.floyd.discharge, type="o", col="blue", ylim=c(0,3000))
 lines(site.02105900.percentile.data, type="o", col="red")
