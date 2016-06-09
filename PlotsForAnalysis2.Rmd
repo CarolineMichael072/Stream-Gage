@@ -1,0 +1,420 @@
+---
+title: "Hurricane Floyd Station Plots"
+author: "CarolineMichael072"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+Build tables and plots for all stations with 95th percentile data.
+
+RALEIGH-DURHAM AREA
+
+WAKE COUNTY~
+```{r}
+library(waterData)
+site.02087275.floyd.discharge <- importDVs("02087275", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")
+
+site.02087275.floyd.discharge <- c(18, 13, 11, 74, 2030, 2630, 1600, 1110, 687, 420, 287, 185, 125, 93, 591, 5030, 1730, 1480, 1180, 763, 548, 730, 333, 199, 138, 104)
+
+site.02087275.p95.data <- c(741, 531, 297, 400, 2030, 3070, 1640, 1240, 750, 555, 614, 406, 229, 134, 591, 5030, 1730, 1480, 1180, 763, 548, 730, 363, 582, 971, 697)
+
+site.02087275.p50.data <- c(69, 54, 89, 90, 73, 59, 76, 90, 67, 47, 41, 33, 27, 27, 27, 33, 27, 23, 25, 33, 38, 46, 38, 50, 59, 65)
+
+plot(site.02087275.floyd.discharge, type="o", col="blue")
+lines(site.02087275.p95.data, type="o", col="red")
+lines(site.02087275.p50.data, type="o", col="green")
+title(main="Crabtree CR at HWY 7 at Raleigh, NC", sub="Floyd Discharge Comparison")
+
+---
+
+library(waterData)
+site.02087324.floyd.discharge <- importDVs("02087324", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")
+  
+site.02087324.floyd.discharge <- c(28, 23, 19, 151, 2280, 3030, 1800, 1300, 940, 582, 387, 229, 136, 91, 702, 6060, 2290, 1710, 1440, 1040, 807, 1040, 478)  
+  
+site.02087324.p95.data <- c(837, 873, 535, 553, 1730, 6140, 2470, 1830, 1670, 1510, 1540, 792, 533, 638, 4090, 2010, 1400, 1130, 783, 622, 908, 470, 533, 932, 787)
+
+site.02087324.p50.data <- c(41, 52, 69, 113, 85, 69, 66, 66, 52, 41, 36, 29, 28, 32, 30, 35, 34, 28, 30, 32, 36, 35, 41, 58, 70, 69)
+
+plot(site.02087324.floyd.discharge, type="o", col="blue", ylim=c(0,6500))
+lines(site.02087324.p95.data, type="o", col="red")
+lines(site.02087324.p50.data, type="o", col="green")
+title(main="Crabtree CR at US 1 at Raleigh, NC", sub="Floyd Discharge Comparison")
+
+---
+
+library(waterData)
+site.0208732534.floyd.discharge <- importDVs("0208732534", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")
+
+site.0208732534.floyd.discharge <- c(0.18, 0.1, 0.1, 3.30, 15, 4.2, 0.43, 0.29, 2.1, 0.35, 0.21, 0.18, 0.19, 0.26, 13, 15, 0.99, 0.64, 0.55, 0.24, 5.1, 1.3, 0.29, 0.24, 0.22, 0.21)
+
+site.0208732534.p95.data <- c(5, 2.4, 6.4, 3.7, 15, 14, 2.7, 6.8, 2.1, 1.4, 0.8, 0.18, 0.89, 3.3, 13, 15, 2.9, 5.8, 0.55, 1.7, 6, 4.5, 2.9, 4.4, 6.2, 5.4)
+
+site.0208732534.p50.data <- c(0.08, 0.06, 0.06, 0.08, 0.06, 0.06, 0.07, 0.06, 0.06, 0.06, 0.06, 0.05, 0.05, 0.09, 0.07, 0.1, 0.07, 0.07, 0.07, 0.07, 0.07, 0.07, 0.06, 0.06, 0.05, 0.08)
+
+plot(site.0208732534.floyd.discharge, type="o", col="blue", ylim=c(0,15))
+lines(site.0208732534.p95.data, type="o", col="red")
+lines(site.0208732534.p50.data, type="o", col="green")
+title(main="Pigeon House CR at Cameron Village at Raleigh, NC", sub="Floyd Discharge Comparison")
+
+---
+
+library(waterData)
+site.0208732885.floyd.discharge <- importDVs("0208732885", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")
+
+site.0208732885.floyd.discharge <- c(1.8, 1.6, 1.7, 47, 393, 152, 38, 8.4, 14, 16, 4.9, 3.3, 2.5, 3.9, 207, 643, 16, 7.1, 4.6, 3.6, 11, 42, 6.1, 3.9, 2.9, 2.5)
+
+site.0208732885.p95.data <- c(127, 46, 92, 129, 185, 493, 28, 114, 41, 58, 62, 56, 40, 31, 86, 267, 74, 97, 24, 36, 52, 129, 61, 44, 71, 77)
+
+site.0208732885.p50.data <- c(2.4, 2.5, 2.2, 2.2, 3.2, 2.3, 2.3, 2.3, 2.3, 2, 1.9, 1.7, 1.8, 2, 1.9, 2, 2, 1.7, 1.8, 2.1, 1.8, 1.8, 1.6, 1.9, 1.9, 2.5)
+
+plot(site.0208732885.floyd.discharge, type="o", col="blue", ylim=c(0,650))
+lines(site.0208732885.p95.data, type="o", col="red")
+lines(site.0208732885.p50.data, type="o", col="green")
+title(main="Marsh Creek Near New Hope, NC", sub="Floyd Discharge Comparison")
+
+---
+  
+library(waterData)
+site.0208735012.floyd.discharge <- importDVs("0208735012", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")$val
+
+readNWISstat("0208735012", "00060")
+library(xtable)
+site.0208735012.p95.data <- readNWISstat("0208735012", "00060")
+xtable(site.0208735012.p95.data[245:270, ])$p95_va
+site.0208735012.p95.data <- xtable(site.0208735012.p95.data[245:270, ])$p95_va
+
+readNWISstat2("0208735012", "00060")
+library(xtable)
+site.0208735012.p50.data <- readNWISstat2("0208735012", "00060")
+xtable(site.0208735012.p50.data[245:270, ])$p50_va
+site.0208735012.p50.data <- xtable(site.0208735012.p50.data[245:270, ])$p50_va
+
+plot(site.0208735012.floyd.discharge, type="o", col="blue", ylim=c(0,200))
+lines(site.0208735012.p95.data, type="o", col="red")
+lines(site.0208735012.p50.data, type="o", col="green")
+title(main="Rocky Branch Below Pullen Dr at Raleigh, NC", sub="Floyd Discharge Comparison")
+
+---
+
+library(waterData)
+site.02087359.floyd.discharge <- importDVs("02087359", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")$val
+
+readNWISstat("02087359", "00060")
+library(xtable)
+site.02087359.p95.data <- readNWISstat("02087359", "00060")
+xtable(site.02087359.p95.data[245:270, ])$p95_va
+site.02087359.p95.data <- xtable(site.02087359.p95.data[245:270, ])$p95_va
+
+readNWISstat2("02087359", "00060")
+library(xtable)
+site.02087359.p50.data <- readNWISstat2("02087359", "00060")
+xtable(site.02087359.p50.data[245:270, ])$p50_va
+site.02087359.p50.data <- xtable(site.02087359.p50.data[245:270, ])$p50_va
+
+plot(site.02087359.floyd.discharge, type="o", col="blue")
+lines(site.02087359.p95.data, type="o", col="red")
+lines(site.02087359.p50.data, type="o", col="green")
+title(main="Walnut Creek at Sunnybrook Dr Near Raleigh, NC", sub="Floyd Discharge Comparison")  
+
+---
+
+library(waterData)
+site.0208758850.floyd.discharge <- importDVs("0208758850", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")$val
+
+readNWISstat("0208758850", "00060")
+library(xtable)
+site.0208758850.p95.data <- readNWISstat("0208758850", "00060")
+xtable(site.0208758850.p95.data[245:270, ])$p95_va
+site.0208758850.p95.data <- xtable(site.0208758850.p95.data[245:270, ])$p95_va
+
+readNWISstat2("0208758850", "00060")
+library(xtable)
+site.0208758850.p50.data <- readNWISstat2("0208758850", "00060")
+xtable(site.0208758850.p50.data[245:270, ])$p50_va
+site.0208758850.p50.data <- xtable(site.0208758850.p50.data[245:270, ])$p50_va
+
+plot(site.0208758850.floyd.discharge, type="o", col="blue", ylim=c(0,2500))
+lines(site.0208758850.p95.data, type="o", col="red")
+lines(site.0208758850.p50.data, type="o", col="green")
+title(main="Swift Creek Near McCullars Crossroads, NC", sub="Floyd Discharge Comparison")  
+  
+```
+
+DURHAM COUNTY~
+```{r}
+library(waterData)
+site.02085070.floyd.discharge <- importDVs("02085070", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")
+
+site.02085070.floyd.discharge <- c(5.1, 3.9, 3.5, 23, 1390, 2250, 450, 130, 80, 58, 42, 35, 28, 24, 142, 5360, 953, 341, 141, 91, 194, 795, 234, 109, 79, 62)
+
+site.02085070.p95.data <- c(330, 176, 108, 386, 488, 3050, 2080, 685, 343, 156, 180, 268, 186, 98, 88, 65, 148, 381, 326, 158, 197, 115, 424, 222, 360, 598)
+
+site.02085070.p50.data <- c(19, 12, 15, 18, 17, 17, 20, 20, 15, 16, 15, 14, 13, 13, 13, 11, 11, 9, 10, 9.8, 14, 15, 14, 14, 14, 15)
+
+plot(site.02085070.floyd.discharge, type="o", col="blue", ylim=c(0,5500))
+lines(site.02085070.p95.data, type="o", col="red")
+lines(site.02085070.p50.data, type="o", col="green")
+title(main="Eno River Near Durham, NC", sub="Floyd Discharge Comparison")
+
+---
+
+library(waterData)
+site.0208521324.floyd.discharge <- importDVs("0208521324", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")
+  
+site.0208521324.floyd.discharge <- c(0.57, 0.5, 0.4, 0.51, 377, 940, 174, 52, 25, 14, 8.8, 6, 4.3, 3.8, 27, 3300, 306, 94, 55, 35, 26, 250, 72, 38, 26, 20)
+
+site.0208521324.p95.data <- c(390, 92, 102, 314, 495, 5460, 835, 218, 212, 73, 114, 170, 73, 51, 45, 1830, 231, 312, 451, 126, 111, 165, 419, 180, 207, 210)
+
+site.0208521324.p50.data <- c(4.6, 3.2, 3.5, 4.2, 7, 9.4, 6.8, 5.9, 4.2, 5.7, 4.7, 3.5, 3, 3.1, 2.9, 3.5, 3, 2.9 , 2.7, 2.7, 2.8, 2.4, 2.3, 2.6, 4.2, 4.7)
+
+plot(site.0208521324.floyd.discharge, type="o", col="blue", ylim=c(0,5500))
+lines(site.0208521324.p95.data, type="o", col="red")
+lines(site.0208521324.p50.data, type="o", col="green")
+title(main="Little River at SR1461 Near Orange Factory, NC", sub="Floyd Discharge Comparison")
+
+---
+  
+library(waterData)
+site.0208524090.floyd.discharge <- importDVs("0208524090", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")$val
+
+readNWISstat("0208524090", "00060")
+library(xtable)
+site.0208524090.p95.data <- readNWISstat("0208524090", "00060")
+xtable(site.0208524090.p95.data[245:270, ])$p95_va
+site.0208524090.p95.data <- xtable(site.0208524090.p95.data[245:270, ])$p95_va
+
+readNWISstat2("0208524090", "00060")
+library(xtable)
+site.0208524090.p50.data <- readNWISstat2("0208524090", "00060")
+xtable(site.0208524090.p50.data[245:270, ])$p50_va
+site.0208524090.p50.data <- xtable(site.0208524090.p50.data[245:270, ])$p50_va
+
+plot(site.0208524090.floyd.discharge, type="o", col="blue", ylim=c(0,2500))
+lines(site.0208524090.p95.data, type="o", col="red")
+lines(site.0208524090.p50.data, type="o", col="green")
+title(main="Mountain Creek at SR1617 Near Bahama, NC", sub="Floyd Discharge Comparison") 
+
+---
+  
+library(waterData)
+site.0208524975.floyd.discharge <- importDVs("0208524975", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")$val
+
+readNWISstat("0208524975", "00060")
+library(xtable)
+site.0208524975.p95.data <- readNWISstat("0208524975", "00060")
+xtable(site.0208524975.p95.data[245:270, ])$p95_va
+site.0208524975.p95.data <- xtable(site.0208524975.p95.data[245:270, ])$p95_va
+
+readNWISstat2("0208524975", "00060")
+library(xtable)
+site.0208524975.p50.data <- readNWISstat2("0208524975", "00060")
+xtable(site.0208524975.p50.data[245:270, ])$p50_va
+site.0208524975.p50.data <- xtable(site.0208524975.p50.data[245:270, ])$p50_va
+
+plot(site.0208524975.floyd.discharge, type="o", col="blue", ylim=c(0,5000))
+lines(site.0208524975.p95.data, type="o", col="red")
+lines(site.0208524975.p50.data, type="o", col="green")
+title(main="Little R BL Little R Trib at Fairntosh, NC", sub="Floyd Discharge Comparison")
+
+---
+
+library(waterData)
+site.02085500.floyd.discharge <- importDVs("02085500", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")$val
+
+readNWISstat("02085500", "00060")
+library(xtable)
+site.02085500.p95.data <- readNWISstat("02085500", "00060")
+xtable(site.02085500.p95.data[245:270, ])$p95_va
+site.02085500.p95.data <- xtable(site.02085500.p95.data[245:270, ])$p95_va
+
+readNWISstat2("02085500", "00060")
+library(xtable)
+site.02085500.p50.data <- readNWISstat2("02085500", "00060")
+xtable(site.02085500.p50.data[245:270, ])$p50_va
+site.02085500.p50.data <- xtable(site.02085500.p50.data[245:270, ])$p50_va
+
+plot(site.02085500.floyd.discharge, type="o", col="blue", ylim=c(0,7200))
+lines(site.02085500.p95.data, type="o", col="red")
+lines(site.02085500.p50.data, type="o", col="green")
+title(main="Flat River at Bahama, NC", sub="Floyd Discharge Comparison")  
+  
+---
+
+library(waterData)
+site.0208650112.floyd.discharge <- importDVs("0208650112", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")$val
+
+readNWISstat("0208650112", "00060")
+library(xtable)
+site.0208650112.p95.data <- readNWISstat("0208650112", "00060")
+xtable(site.0208650112.p95.data[245:270, ])$p95_va
+site.0208650112.p95.data <- xtable(site.0208650112.p95.data[245:270, ])$p95_va
+
+readNWISstat2("0208650112", "00060")
+library(xtable)
+site.0208650112.p50.data <- readNWISstat2("0208650112", "00060")
+xtable(site.0208650112.p50.data[245:270, ])$p50_va
+site.0208650112.p50.data <- xtable(site.0208650112.p50.data[245:270, ])$p50_va
+
+plot(site.0208650112.floyd.discharge, type="o", col="blue", ylim=c(0,200))
+lines(site.0208650112.p95.data, type="o", col="red")
+lines(site.0208650112.p50.data, type="o", col="green")
+title(main="Flat River Trib Near Willardville, NC", sub="Floyd Discharge Comparison")  
+  
+---
+
+library(waterData)
+site.02097314.floyd.discharge <- importDVs("02097314", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")$val
+
+readNWISstat("02097314", "00060")
+library(xtable)
+site.02097314.p95.data <- readNWISstat("02097314", "00060")
+xtable(site.02097314.p95.data[245:270, ])$p95_va
+site.02097314.p95.data <- xtable(site.02097314.p95.data[245:270, ])$p95_va
+
+readNWISstat2("02097314", "00060")
+library(xtable)
+site.02097314.p50.data <- readNWISstat2("02097314", "00060")
+xtable(site.02097314.p50.data[245:270, ])$p50_va
+site.02097314.p50.data <- xtable(site.02097314.p50.data[245:270, ])$p50_va
+
+plot(site.02097314.floyd.discharge, type="o", col="blue", ylim=c(0,3800))
+lines(site.02097314.p95.data, type="o", col="red")
+lines(site.02097314.p50.data, type="o", col="green")
+title(main="New Hope Creek Near Blands, NC", sub="Floyd Discharge Comparison") 
+
+---
+
+library(waterData)
+site.0209741955.floyd.discharge <- importDVs("0209741955", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")$val
+
+readNWISstat("0209741955", "00060")
+library(xtable)
+site.0209741955.p95.data <- readNWISstat("0209741955", "00060")
+xtable(site.0209741955.p95.data[245:270, ])$p95_va
+site.0209741955.p95.data <- xtable(site.0209741955.p95.data[245:270, ])$p95_va
+
+readNWISstat2("0209741955", "00060")
+library(xtable)
+site.0209741955.p50.data <- readNWISstat2("0209741955", "00060")
+xtable(site.0209741955.p50.data[245:270, ])$p50_va
+site.0209741955.p50.data <- xtable(site.0209741955.p50.data[245:270, ])$p50_va
+
+plot(site.0209741955.floyd.discharge, type="o", col="blue", ylim=c(0,2000))
+lines(site.0209741955.p95.data, type="o", col="red")
+lines(site.0209741955.p50.data, type="o", col="green")
+title(main="Northeast Creek at SR1100 NR Genlee, NC", sub="Floyd Discharge Comparison") 
+  
+```
+
+CHARLOTTE AREA
+
+GASTON COUNTY~
+```{r}
+library(waterData)
+site.02144000.floyd.discharge <- importDVs("02144000", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")$val
+
+readNWISstat("02144000", "00060")
+library(xtable)
+site.02144000.p95.data <- readNWISstat("02144000", "00060")
+xtable(site.02144000.p95.data[245:270, ])$p95_va
+site.02144000.p95.data <- xtable(site.02144000.p95.data[245:270, ])$p95_va
+
+readNWISstat2("02144000", "00060")
+library(xtable)
+site.02144000.p50.data <- readNWISstat2("02144000", "00060")
+xtable(site.02144000.p50.data[245:270, ])$p50_va
+site.02144000.p50.data <- xtable(site.02144000.p50.data[245:270, ])$p50_va
+
+plot(site.02144000.floyd.discharge, type="o", col="blue", ylim=c(0,200))
+lines(site.02144000.p95.data, type="o", col="red")
+lines(site.02144000.p50.data, type="o", col="green")
+title(main="Long Creek Near Bessemer City, NC", sub="Floyd Discharge Comparison")
+
+---
+
+library(waterData)
+site.02145000.floyd.discharge <- importDVs("02145000", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")$val
+
+readNWISstat("02145000", "00060")
+library(xtable)
+site.02145000.p95.data <- readNWISstat("02145000", "00060")
+xtable(site.02145000.p95.data[245:270, ])$p95_va
+site.02145000.p95.data <- xtable(site.02145000.p95.data[245:270, ])$p95_va
+
+readNWISstat2("02145000", "00060")
+library(xtable)
+site.02145000.p50.data <- readNWISstat2("02145000", "00060")
+xtable(site.02145000.p50.data[245:270, ])$p50_va
+site.02145000.p50.data <- xtable(site.02145000.p50.data[245:270, ])$p50_va
+
+plot(site.02145000.floyd.discharge, type="o", col="blue", ylim=c(0,1000))
+lines(site.02145000.p95.data, type="o", col="red")
+lines(site.02145000.p50.data, type="o", col="green")
+title(main="South Fork Catawba River at Lowell, NC", sub="Floyd Discharge Comparison")
+  
+```
+
+MECKLENBURG COUNTY~
+```{r}
+library(waterData)
+site.0212414900.floyd.discharge <- importDVs("0212414900", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")$val
+
+readNWISstat("0212414900", "00060")
+library(xtable)
+site.0212414900.p95.data <- readNWISstat("0212414900", "00060")
+xtable(site.0212414900.p95.data[245:270, ])$p95_va
+site.0212414900.p95.data <- xtable(site.0212414900.p95.data[245:270, ])$p95_va
+
+readNWISstat2("0212414900", "00060")
+library(xtable)
+site.0212414900.p50.data <- readNWISstat2("0212414900", "00060")
+xtable(site.0212414900.p50.data[245:270, ])$p50_va
+site.0212414900.p50.data <- xtable(site.0212414900.p50.data[245:270, ])$p50_va
+
+plot(site.0212414900.floyd.discharge, type="o", col="blue")
+lines(site.0212414900.p95.data, type="o", col="red")
+lines(site.0212414900.p50.data, type="o", col="green")
+title(main="Mallard CR BL Stony CR NR Harrisburg, NC", sub="Floyd Discharge Comparison")  
+
+```
+VIRGINIA
+
+SOUTHHAMPTON COUNTY~
+```{r}
+library(waterData)
+site.02047000.floyd.discharge <- importDVs("02047000", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")$val
+
+readNWISstat("02047000", "00060")
+library(xtable)
+site.02047000.p95.data <- readNWISstat("02047000", "00060")
+xtable(site.02047000.p95.data[245:270, ])$p95_va
+site.02047000.p95.data <- xtable(site.02047000.p95.data[245:270, ])$p95_va
+
+readNWISstat2("02047000", "00060")
+library(xtable)
+site.02047000.p50.data <- readNWISstat2("02047000", "00060")
+xtable(site.02047000.p50.data[245:270, ])$p50_va
+site.02047000.p50.data <- xtable(site.02047000.p50.data[245:270, ])$p50_va
+
+plot(site.02047000.floyd.discharge, type="o", col="blue")
+lines(site.02047000.p95.data, type="o", col="red")
+lines(site.02047000.p50.data, type="o", col="green")
+title(main="Nottoway River Near Sebrell, VA", sub="Floyd Discharge Comparison") 
+
+```
+
+
+```{r}
+
+
+```
+
+
+
+
+
+
+

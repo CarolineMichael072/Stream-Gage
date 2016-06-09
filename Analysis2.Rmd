@@ -1,0 +1,605 @@
+---
+title: "Hurricane Floyd Data Stream Gage Cont."
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+We want more plots than what was inclued in the last stream gage analysis. We also want to include 50th percentile (median) data on our plots. We already have all the stream gage site numbers from the first part of the analysis.
+
+First, we will create plots from station numbers in the Raleigh-Durham area. Stations without 95th percentile data will be excluded from analysis.
+
+```{r}
+buildURL <- function(siteNumber) {
+  url <- "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites="
+  url <- paste0(url, siteNumber, "&statReportType=daily&statTypeCd=p95")
+  return(url)}
+
+# Wake County~
+
+buildURL("0208718210")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0208718210&statReportType=daily&statTypeCd=p95"
+# No 95th percentile 
+
+buildURL("02087183")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02087183&statReportType=daily&statTypeCd=p95"
+
+buildURL("0208721055")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0208721055&statReportType=daily&statTypeCd=p95"
+# No 95th percentile 
+
+buildURL("0208721290")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0208721290&statReportType=daily&statTypeCd=p95"
+# No 95th percentile 
+
+buildURL("0208725600")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0208725600&statReportType=daily&statTypeCd=p95"
+# No 95th percentile 
+
+buildURL("0208726005")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0208726005&statReportType=daily&statTypeCd=p95"
+
+buildURL("0208726100")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0208726100&statReportType=daily&statTypeCd=p95"
+# No 95th percentile 
+
+buildURL("0208726835")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0208726835&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("0208726990")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0208726990&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("02087275")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02087275&statReportType=daily&statTypeCd=p95"
+
+buildURL("0208730025")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0208730025&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("02087322")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02087322&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("02087324")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02087324&statReportType=daily&statTypeCd=p95"
+
+buildURL("0208732534")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0208732534&statReportType=daily&statTypeCd=p95"
+
+buildURL("0208732810")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0208732810&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("0208732885")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0208732885&statReportType=daily&statTypeCd=p95"
+
+buildURL("0208734220")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0208734220&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("0208735012")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0208735012&statReportType=daily&statTypeCd=p95"
+
+buildURL("0208735550")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0208735550&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("02087359")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02087359&statReportType=daily&statTypeCd=p95"
+
+buildURL("0208739674")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0208739674&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("0208739678")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0208739678&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("0208741400")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0208741400&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("02087580")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02087580&statReportType=daily&statTypeCd=p95"
+# No 95th percentile data
+
+buildURL("0208758850")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0208758850&statReportType=daily&statTypeCd=p95"
+
+buildURL("0208762750")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0208762750&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("0208762755")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0208762755&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("02088383")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02088383&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("0209782609")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0209782609&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("354347078401501")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=354347078401501&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("354349078402801")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=354349078402801&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("354355078401401")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=354355078401401&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+---
+
+# Durham County~
+
+buildURL("02085070")  
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02085070&statReportType=daily&statTypeCd=p95"
+
+buildURL("02085079")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02085079&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("0208521324")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0208521324&statReportType=daily&statTypeCd=p95"
+
+buildURL("02085220")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02085220&statReportType=daily&statTypeCd=p95"
+# 95th percentile data only ranges from 1962-1987, excluded by date
+
+buildURL("0208524090")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0208524090&statReportType=daily&statTypeCd=p95"
+
+buildURL("0208524975")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0208524975&statReportType=daily&statTypeCd=p95"
+
+buildURL("02085500")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02085500&statReportType=daily&statTypeCd=p95"
+
+buildURL("02086000")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02086000&statReportType=daily&statTypeCd=p95"
+# Data range from 1926-1991, exluded by date
+
+buildURL("02086500")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02086500&statReportType=daily&statTypeCd=p95"
+# No 95th percentile data
+
+buildURL("0208650112")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0208650112&statReportType=daily&statTypeCd=p95"
+
+buildURL("0208675010")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0208675010&statReportType=daily&statTypeCd=p95"
+# No 95th percentile data
+
+buildURL("02086849")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02086849&statReportType=daily&statTypeCd=p95"
+
+buildURL("0208700780")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0208700780&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("0209722970")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0209722970&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("02097280")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02097280&statReportType=daily&statTypeCd=p95"
+# No 95th percentile data
+
+buildURL("02097314")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02097314&statReportType=daily&statTypeCd=p95"
+
+buildURL("0209741955")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0209741955&statReportType=daily&statTypeCd=p95"
+
+---
+
+# Johnston County~
+  
+buildURL("02087500")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02087500&statReportType=daily&statTypeCd=p95"
+
+buildURL("02087570")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02087570&statReportType=daily&statTypeCd=p95"
+# Data range 1971-1991, excluded by date
+
+buildURL("0208773375")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0208773375&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("02088000")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02088000&statReportType=daily&statTypeCd=p95"
+
+buildURL("02088470")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02088470&statReportType=daily&statTypeCd=p95"
+# Data range 1965-1989, excluded by date
+
+buildURL("02088500")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02088500&statReportType=daily&statTypeCd=p95"
+
+---
+
+# Orange County~
+
+buildURL("02084909")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02084909&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("02085000")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02085000&statReportType=daily&statTypeCd=p95"
+
+buildURL("02096846")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02096846&statReportType=daily&statTypeCd=p95"
+
+buildURL("0209691590")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0209691590&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("0209691611")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0209691611&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("0209734440")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0209734440&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("0209736050")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0209736050&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("02097464")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02097464&statReportType=daily&statTypeCd=p95"
+
+buildURL("02097517")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02097517&statReportType=daily&statTypeCd=p95"
+
+---
+  
+# Chatham County~
+  
+buildURL("02096960")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02096960&statReportType=daily&statTypeCd=p95"
+
+buildURL("0209782150")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0209782150&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("02098198")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02098198&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("02098200")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02098200&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("02098206")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02098206&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("0210166029")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0210166029&statReportType=daily&statTypeCd=p95"
+
+buildURL("02101726")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02101726&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("02101800")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02101800&statReportType=daily&statTypeCd=p95"
+
+buildURL("02102094")
+#"http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02102094&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("02102192")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02102192&statReportType=daily&statTypeCd=p95"
+
+---
+
+# Franklin County~
+  
+buildURL("02081747")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02081747&statReportType=daily&statTypeCd=p95"
+
+buildURL("02082731")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02082731&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+```
+Now we sort through stream stations in the Charlotte, NC area.
+
+```{r}
+# Mecklenburg County~
+
+buildURL("0212414900")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0212414900&statReportType=daily&statTypeCd=p95"
+
+buildURL("02142651")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02142651&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("0214266000")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0214266000&statReportType=daily&statTypeCd=p95"
+
+buildURL("02142900")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0212414900&statReportType=daily&statTypeCd=p95"
+
+buildURL("0214291555")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0214291555&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("0214295600")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0214295600&statReportType=daily&statTypeCd=p95"
+
+buildURL("0214620805")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0214620805&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("02146211")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02146211&statReportType=daily&statTypeCd=p95"
+
+buildURL("0214627970")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0214627970&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("02146285")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02146285&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("02146300")
+#"http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02146300&statReportType=daily&statTypeCd=p95"
+
+buildURL("02146315")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02146315&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("02146348")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02146348&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("02146381")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02146381&statReportType=daily&statTypeCd=p95"
+
+buildURL("02146409")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02146409&statReportType=daily&statTypeCd=p95"
+
+buildURL("0214642825")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0214642825&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("0214643840")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0214643840&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("0214645022")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0214645022&statReportType=daily&statTypeCd=p95"
+
+buildURL("02146470")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02146470&statReportType=daily&statTypeCd=p95"
+
+buildURL("0214650690")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0214650690&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("02146507")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02146507&statReportType=daily&statTypeCd=p95"
+
+buildURL("02146530")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02146530&statReportType=daily&statTypeCd=p95"
+
+buildURL("0214655255")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0214655255&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("02146562")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02146562&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("0214657975")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0214657975&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("02146600")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02146600&statReportType=daily&statTypeCd=p95"
+
+buildURL("0214666925")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0214666925&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("02146670")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02146670&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("0214669980")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0214669980&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("02146700")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02146700&statReportType=daily&statTypeCd=p95"
+
+buildURL("02146750")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02146750&statReportType=daily&statTypeCd=p95"
+
+buildURL("0214677974")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0214677974&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("0214678175")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0214678175&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+---
+
+# Gaston County~
+  
+buildURL("0214399575")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0214399575&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("0214399580")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=0214399580&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("02144000")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02144000&statReportType=daily&statTypeCd=p95"
+
+buildURL("02145000")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02145000&statReportType=daily&statTypeCd=p95"
+
+```
+Sort through stream stations near Wilmington, NC
+
+```{r}
+# Brunswick County~
+
+buildURL("02105900")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02105900&statReportType=daily&statTypeCd=p95"
+
+buildURL("02109500")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02109500&statReportType=daily&statTypeCd=p95"
+
+---
+
+# New Hanover County~
+
+buildURL("02093229")  
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02093229&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+---
+  
+# Pender County~
+
+buildURL("02107544")
+# http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02107544&statReportType=daily&statTypeCd=p95""
+# No 95th percentile
+
+buildURL("02108566")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02108566&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+```
+Sort through stream stations near Jacksonville, NC
+
+```{r}
+# Onslow County~
+
+buildURL("02107544")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02107544&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("02108566")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02108566&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+```
+
+Sort through stream stations in Southhampton County, VA
+
+```{r}
+# Southhampton County~
+
+buildURL("02047000")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02047000&statReportType=daily&statTypeCd=p95"
+
+buildURL("02047100")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02047100&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+buildURL("02049500")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02049500&statReportType=daily&statTypeCd=p95"
+
+buildURL("02052090")
+# "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites=02052090&statReportType=daily&statTypeCd=p95"
+# No 95th percentile
+
+```
+Now that we've sorted through all the desired stream stations, we can start building plots. Plots include the 50th and 95th percentile of flow by day along with the daily mean discharge from Hurricane Floyd (date range chosen as 09/01/1999-09/26/1999).
+
+```{r}
+readNWISstat <- function (siteNumber, parameterCd)
+{
+  url <- buildURL(siteNumber)
+  data <- read.table(url,sep="\t",header=T)
+  #remove first row
+  data <- data[2:length(data[,1]),]
+  #keep only discharge values
+  data <- data[data$parameter_cd==parameterCd,]
+  
+  return(data)
+}
+
+library(waterData)
+site.02087183.floyd.discharge <- importDVs("02087183", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")
+site.02087183.floyd.discharge <- c(182, 183, 183, 184, 187, 192, 196, 1500, 3310, 3350, 3340, 3280, 3290, 2310, 558, 427, 215, 213, 211, 210, 209, 205, 1070, 2730, 3750)
+
+readNWISstat("02087183", "00060")
+
+library(xtable)
+site.02087183.p95.data <- readNWISstat("02087183", "00060")
+xtable(site.02087183.p95.data[245:270, ])
+site.02087183.p95.data <- c(787, 762, 816, 683, 727, 828, 967, 1750, 3660, 4120, 3540, 3500, 3640, 3430, 3450, 3550, 3050, 2550, 2470, 2880, 2970, 2760, 3080, 2850, 3670, 4370)
+
+buildURL2 <- function(siteNumber) {
+  url <- "http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites="
+  url <- paste0(url, siteNumber, "&statReportType=daily&statTypeCd=p50")
+  return(url)}
+
+readNWISstat2 <- function (siteNumber, parameterCd)
+{
+  url <- buildURL2(siteNumber)
+  data <- read.table(url,sep="\t",header=T)
+  #remove first row
+  data <- data[2:length(data[,1]),]
+  #keep only discharge values
+  data <- data[data$parameter_cd==parameterCd,]
+  
+  return(data)
+}
+
+library(xtable)
+site.02087183.p50.data <- readNWISstat2("02087183", "00060")
+xtable(site.02087183.p50.data[245:270, ])
+site.02087183.p50.data <- c(145, 144, 155, 147, 147, 147, 159, 143, 163, 156, 156, 153, 167, 165, 165, 159, 156, 156, 156, 156, 155, 155, 156, 158, 156, 152)
+
+plot(site.02087183.floyd.discharge, type="o", col="blue", ylim=c(0,5000))
+lines(site.02087183.p95.data, type="o", col="red")
+lines(site.02087183.p50.data, type="o", col="green")
+title(main="Neuse River Near Falls, NC Floyd Discharge Comparison")
+
+```
+Two new functions, buildURL2 and readNWISstat2 are created to incorporate the 50th percentile URL into data analysis.
+
+```{r}
+library(waterData)
+site.0208726005.floyd.discharge <- importDVs("0208726005", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")
+site.0208726005.floyd.discharge <- c(16, 13, 11, 27, 1430, 2010, 1430, 1060, 628, 391, 263, 154, 94, 65, 350, 3250, 1460, 1280, 1060, 695, 460, 640, 282, 151, 96, 66)
+
+library(xtable)
+site.0208726005.p95.data <- readNWISstat("0208726005", "00060")
+xtable(site.0208726005.p95.data[245:270, ])
+site.0208726005.p95.data <- c(582, 299, 180, 254, 1230, 2130, 1370, 1030, 619, 444, 450, 273, 148, 96, 284, 2510, 1170, 1100, 885, 580, 380, 522, 302, 409, 576, 424)
+
+library(xtable)
+site.0208726005.p50.data <- readNWISstat2("0208726005", "00060")
+xtable(site.0208726005.p50.data[245:270, ])
+site.0208726005.p50.data <- c(19, 17, 17, 27, 45, 40, 32, 30, 22, 24, 24, 18, 15, 14, 16, 15, 14, 14, 15, 14, 15, 18, 22, 23, 23, 34)
+
+plot(site.0208726005.floyd.discharge, type="o", col="blue", ylim=c(0,3500))
+lines(site.0208726005.p95.data, type="o", col="red")
+lines(site.0208726005.p50.data, type="o", col="green")
+title(main="Crabtree CR at Ebenezer Church Rd Near Raleigh, NC", sub="Floyd Discharge Comparison")
+```
+
+
+
+
+
+
