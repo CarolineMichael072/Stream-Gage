@@ -53,7 +53,7 @@ The generated url for site 02105900 includes 95th percentile values for paramete
 readNWISstat <- function (siteNumber, parameterCd)
 {
   url <- buildURL(siteNumber)
-  data <- read.table(url,sep="\t",header=T)
+  data <- read.table(url,sep="\t",header=T, as.is = TRUE)
   #remove first row
   data <- data[2:length(data[,1]),]
   #keep only discharge values
@@ -70,10 +70,9 @@ site.02105900.floyd.discharge <- importDVs("02105900", code="00060", stat="00003
 site.02105900.floyd.discharge
 
 ```
-We can also build a url with site.02105900.floyd.discharge. Note that the discharges are denoted with a qualcode. Qualcode "A" denotes approved for publication, qualcode "e" means that the value has been edited or estimated be USGS personnel. A full list of qualcodes is available at (http://help.waterdata.usgs.gov/codes-and-parameters/daily-value-qualification-code-dv_rmk_cd)
+We can also build a url with site.02105900.floyd.discharge. Note that the discharges are denoted with a qualcode. Qualcode "A" denotes approved for publication, qualcode "e" means that the value has been edited or estimated be USGS personnel. A full list of qualcodes is available  [here](http://help.waterdata.usgs.gov/codes-and-parameters/daily-value-qualification-code-dv_rmk_cd). 
 
 ```{r}
-library(waterData)
 site.02105900.floyd.url <- tellMeURL("02105900", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")
 site.02105900.floyd.url
 ```
@@ -83,14 +82,19 @@ Plot the Floyd data along with the percentile data to get a visual representatio
 # Create a plot of the daily discharge data using the waterData function plotParam. This step is not strictly necessary
 floyd.plot <- plotParam(site.02105900.floyd.discharge)
 print(floyd.plot)
+```
 
+```{r results = 'asis'}
 # Sort out all percentile values for September
-library(xtable)
+library(knitr)
 site.02105900.percentile.data <- readNWISstat("02105900", "00060")
-xtable(site.02105900.percentile.data[245:275, ])
+kable(site.02105900.percentile.data[245:275, ])
+```
 
+```{r}
 # Creating data set manually for September 1-26, find better way to do this
-site.02105900.percentile.data <- c(681, 327, 182, 208, 233, 824, 357, 190, 241, 196, 288, 740, 425, 296, 839, 983, 757, 518, 504, 337, 299, 297, 634, 640, 377, 287)
+site.02105900.percentile.data <- as.numeric(site.02105900.percentile.data[245:270, "p95_va"])
+
 site.02105900.floyd.discharge <- c(77, 43, 27, 20, 16, 15, 16, 16, 16, 27, 32, 20, 14, 12, 1000, 3000, 2600, 1600, 1200, 900, 850, 750, 650, 580, 540, 520)
 
 # Create plot with both data sets
@@ -200,7 +204,8 @@ site.02087324.floyd.discharge
 
 library(xtable)
 site.02087324.percentile.data <- readNWISstat("02087324", "00060")
-xtable(site.02105900.percentile.data[245:275, ])
+head(site.02087324.percentile.data)
+# xtable(site.02105900.percentile.data[245:275, ])
 
 site.02087324.percentile.data <- c(837, 873, 535, 553, 1730, 6140, 2470, 1830, 1670, 1510, 1510, 1540, 792, 533, 638, 4090, 2010, 1400, 1130, 783, 622, 908, 470, 533, 932, 787)
 site.02087324.floyd.discharge <- c(28, 23, 19, 151, 2280, 3030, 1800, 1300, 940, 582, 387, 229, 136, 91, 702, 6060, 2290, 1710, 1440, 1040, 807, 1040, 478, 270, 167, 112)
