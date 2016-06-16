@@ -6,6 +6,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
 ```
 Build tables and plots for all stations with 95th percentile data.
 
@@ -13,8 +14,8 @@ RALEIGH-DURHAM AREA
 
 WAKE COUNTY~
 ```{r}
-library(waterData)
-site.02087275.floyd.discharge <- importDVs("02087275", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")
+#library(waterData)
+#site.02087275.floyd.discharge <- importDVs("02087275", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")
 
 site.02087275.floyd.discharge <- c(18, 13, 11, 74, 2030, 2630, 1600, 1110, 687, 420, 287, 185, 125, 93, 591, 5030, 1730, 1480, 1180, 763, 548, 730, 333, 199, 138, 104)
 
@@ -38,7 +39,7 @@ site.02087324.p95.data <- c(837, 873, 535, 553, 1730, 6140, 2470, 1830, 1670, 15
 
 site.02087324.p50.data <- c(41, 52, 69, 113, 85, 69, 66, 66, 52, 41, 36, 29, 28, 32, 30, 35, 34, 28, 30, 32, 36, 35, 41, 58, 70, 69)
 
-plot(site.02087324.floyd.discharge, type="o", col="blue", ylim=c(0,6500))
+plot(site.02087324.floyd.discharge, type="o", col="blue", ylim=c(0,6500), ylab="Cubic Feet per Second")
 lines(site.02087324.p95.data, type="o", col="red")
 lines(site.02087324.p50.data, type="o", col="green")
 title(main="Crabtree CR at US 1 at Raleigh, NC", sub="Floyd Discharge Comparison")
@@ -154,7 +155,7 @@ site.02085070.p95.data <- c(330, 176, 108, 386, 488, 3050, 2080, 685, 343, 156, 
 
 site.02085070.p50.data <- c(19, 12, 15, 18, 17, 17, 20, 20, 15, 16, 15, 14, 13, 13, 13, 11, 11, 9, 10, 9.8, 14, 15, 14, 14, 14, 15)
 
-plot(site.02085070.floyd.discharge, type="o", col="blue", ylim=c(0,5500))
+plot(site.02085070.floyd.discharge, type="o", col="blue", ylim=c(0,5500), ylab="Cubic Feet per Second")
 lines(site.02085070.p95.data, type="o", col="red")
 lines(site.02085070.p50.data, type="o", col="green")
 title(main="Eno River Near Durham, NC", sub="Floyd Discharge Comparison")
@@ -326,7 +327,7 @@ readNWISstat2("02144000", "00060")
 library(xtable)
 site.02144000.p50.data <- readNWISstat2("02144000", "00060")
 xtable(site.02144000.p50.data[245:270, ])$p50_va
-site.02144000.p50.data <- xtable(site.02144000.p50.data[245:270, ])$p50_va
+site.02144000.p50.data <- as.numeric(as.character(site.02144000.p50.data))
 
 plot(site.02144000.floyd.discharge, type="o", col="blue", ylim=c(0,200))
 lines(site.02144000.p95.data, type="o", col="red")
@@ -342,13 +343,13 @@ readNWISstat("02145000", "00060")
 library(xtable)
 site.02145000.p95.data <- readNWISstat("02145000", "00060")
 xtable(site.02145000.p95.data[245:270, ])$p95_va
-site.02145000.p95.data <- xtable(site.02145000.p95.data[245:270, ])$p95_va
+site.02145000.p95.data <- as.numeric(as.character(site.02145000.p95.data))
 
 readNWISstat2("02145000", "00060")
 library(xtable)
 site.02145000.p50.data <- readNWISstat2("02145000", "00060")
 xtable(site.02145000.p50.data[245:270, ])$p50_va
-site.02145000.p50.data <- xtable(site.02145000.p50.data[245:270, ])$p50_va
+site.02145000.p50.data <- as.numeric(as.character(site.02145000.p50.data))
 
 plot(site.02145000.floyd.discharge, type="o", col="blue", ylim=c(0,1000))
 lines(site.02145000.p95.data, type="o", col="red")
@@ -367,14 +368,16 @@ library(xtable)
 site.0212414900.p95.data <- readNWISstat("0212414900", "00060")
 xtable(site.0212414900.p95.data[245:270, ])$p95_va
 site.0212414900.p95.data <- xtable(site.0212414900.p95.data[245:270, ])$p95_va
+site.0212414900.p95.data <- as.numeric(as.character(site.0212414900.p95.data))
 
 readNWISstat2("0212414900", "00060")
 library(xtable)
 site.0212414900.p50.data <- readNWISstat2("0212414900", "00060")
 xtable(site.0212414900.p50.data[245:270, ])$p50_va
 site.0212414900.p50.data <- xtable(site.0212414900.p50.data[245:270, ])$p50_va
+site.0212414900.p50.data <- as.numeric(as.character(site.0212414900.p95.data))
 
-plot(site.0212414900.floyd.discharge, type="o", col="blue")
+plot(site.0212414900.floyd.discharge, type="o", col="blue", ylab="Cubic Feet per Second", ylim=c(0,1500))
 lines(site.0212414900.p95.data, type="o", col="red")
 lines(site.0212414900.p50.data, type="o", col="green")
 title(main="Mallard CR BL Stony CR NR Harrisburg, NC", sub="Floyd Discharge Comparison")  
@@ -392,29 +395,118 @@ library(xtable)
 site.02047000.p95.data <- readNWISstat("02047000", "00060")
 xtable(site.02047000.p95.data[245:270, ])$p95_va
 site.02047000.p95.data <- xtable(site.02047000.p95.data[245:270, ])$p95_va
+site.02047000.p95.data <- as.numeric(as.character(site.02047000.p95.data))
 
 readNWISstat2("02047000", "00060")
 library(xtable)
 site.02047000.p50.data <- readNWISstat2("02047000", "00060")
 xtable(site.02047000.p50.data[245:270, ])$p50_va
 site.02047000.p50.data <- xtable(site.02047000.p50.data[245:270, ])$p50_va
+site.02047000.p50.data <- as.numeric(as.character(site.02047000.p50.data))
 
-plot(site.02047000.floyd.discharge, type="o", col="blue")
+plot(site.02047000.floyd.discharge, type="o", col="blue", ylab="Cubic Feet per Second")
 lines(site.02047000.p95.data, type="o", col="red")
 lines(site.02047000.p50.data, type="o", col="green")
 title(main="Nottoway River Near Sebrell, VA", sub="Floyd Discharge Comparison") 
-
 ```
 
-
+Build table of desired values
 ```{r}
+# Site 02047000, Southhampton, VA
+library(knitr)
+library(waterData)
+site.02047000.floyd.discharge <- importDVs("02047000", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")$val
 
+# Create 50th percentile dataset using xtable first
+library(xtable)
+site.02047000.p50.data <- readNWISstat2("02047000", "00060")
+xtable(site.02047000.p50.data[245:270, ])$p50_va
+site.02047000.p50.data <- xtable(site.02047000.p50.data[245:270, ])$p50_va
+site.02047000.p50.data <- as.numeric(as.character(site.02047000.p50.data))
 
+# Calculate ten times the 50th percentile
+ten.times.p50 <- 10*site.02047000.p50.data
+
+# Find ratio of daily average discharge and 50th percentile discharge
+site.02047000.ratio <- site.02047000.floyd.discharge/site.02047000.p50.data
+
+#Is the daily average flow rate more than 10 times the 50th percentile value? 1=YES, 0=NO
+avg.ten.times.p50 <- ifelse(site.02047000.floyd.discharge > ten.times.p50,1,0)
+
+matrix.02047000 <- matrix(data=c(site.02047000.floyd.discharge, site.02047000.p50.data, ten.times.p50, site.02047000.ratio, avg.ten.times.p50), nrow=26, ncol=5)
+colnames(matrix.02047000) <- c("Daily Average Flow Rate", "50th Percentile Flow Rate", "Ten Times 50th Percentile", "Ratio (Col 1/Col 2)", "Col 1 Greater than Col 3?")
+kable(matrix.02047000)
+
+---
+
+# Try another site, site 0212414900 in Mecklenburg County in Charlotte, NC
+library(knitr)
+library(waterData)
+site.0212414900.floyd.discharge <- importDVs("0212414900", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")$val
+
+library(xtable)
+site.0212414900.p50.data <- readNWISstat2("0212414900", "00060")
+xtable(site.0212414900.p50.data[245:270, ])$p50_va
+site.0212414900.p50.data <- xtable(site.0212414900.p50.data[245:270, ])$p50_va
+site.0212414900.p50.data <- as.numeric(as.character(site.0212414900.p50.data))
+
+ten.times.p50 <- 10*site.0212414900.p50.data
+
+site.0212414900.ratio <- site.0212414900.floyd.discharge/site.0212414900.p50.data
+
+avg.ten.times.p50 <- ifelse(site.0212414900.floyd.discharge > ten.times.p50,1,0)
+
+matrix.0212414900 <- matrix(data=c(site.0212414900.floyd.discharge, site.0212414900.p50.data, ten.times.p50, site.0212414900.ratio, avg.ten.times.p50), nrow=26, ncol=5)
+colnames(matrix.0212414900) <- c("Daily Average Flow Rate", "50th Percentile Flow Rate", "Ten Times 50th Percentile", "Ratio (Col 1/Col 2)", "Col 1 Greater than Col 3?")
+kable(matrix.0212414900)
+  
+---
+  
+# Try another site, site 0208735012 in Wake County  
+library(knitr)
+library(waterData)
+site.0208735012.floyd.discharge <- importDVs("0208735012", code="00060", stat="00003", sdate="1999-09-01", edate="1999-09-26")$val
+
+library(xtable)
+site.0208735012.p50.data <- readNWISstat2("0208735012", "00060")
+xtable(site.0208735012.p50.data[245:270, ])$p50_va
+site.0208735012.p50.data <- xtable(site.0208735012.p50.data[245:270, ])$p50_va
+site.0208735012.p50.data <- as.numeric(as.character(site.0208735012.p50.data))
+
+ten.times.p50 <- 10*site.0208735012.p50.data
+
+site.0208735012.ratio <- site.0208735012.floyd.discharge/site.0208735012.p50.data
+
+avg.ten.times.p50 <- ifelse(site.0208735012.floyd.discharge > ten.times.p50,1,0)
+
+matrix.0208735012 <- matrix(data=c(site.0208735012.floyd.discharge, site.0208735012.p50.data, ten.times.p50, site.0208735012.ratio, avg.ten.times.p50), nrow=26, ncol=5)
+colnames(matrix.0208735012) <- c("Daily Average Flow Rate", "50th Percentile Flow Rate", "Ten Times 50th Percentile", "Ratio (Col 1/Col 2)", "Col 1 Greater than Col 3?")
+kable(matrix.0208735012)
+  
+    
 ```
 
+FAILED ATTEMPT AT FUNCTION
+```{r}
+compile.floyd.p50.data <- function(siteNumber, paramterCd) {
+  buildURL2 <- function(siteNumber) {
+    url <- "http://http://waterservices.usgs.gov/nwis/stat/?format=rdb&sites="
+    url <- paste0(url, siteNumber, "&statReportType=daily&statTypeCd=p50")
+    return(url)
+  }
+  readNWISstat2 <- function(siteNumber, parameterCd) {
+    url <- buildURL2(siteNumber)
+    data <- read.table(url,sep="\t",header=T, as.is = TRUE)
+    #remove first row
+    data <- data[2:length(data[,1]),]
+    #keep only discharge values
+    data <- data[data$parameter_cd==parameterCd,]
+    return(data)
+  }
+  site.siteNumber.p50.data <- readNWISstat2("siteNumber", "parameterCd")
+  xtable(site.siteNumber.p50.data[245:270, ])$p50_va
+  site.siteNumber.p50.data <- xtable(site.siteNumber.p50.data[245:270, ])$p50_va
+  site.siteNumber.p50.data <- as.numeric(as.character(site.siteNumber.p50.data))
+}
 
-
-
-
-
-
+```
